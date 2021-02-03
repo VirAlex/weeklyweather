@@ -11,7 +11,10 @@
       <div class="display">
         <div class="city">
           <h2 class="city-name">Los Angeles, CA</h2>
-          <font-awesome-icon class="fa fa-plus-square-o fa-3x" icon="plus-square" />
+          <font-awesome-icon
+            class="fa fa-plus-square-o fa-3x"
+            icon="plus-square"
+          />
         </div>
         <div class="weather">
           <div class="temp">
@@ -50,15 +53,8 @@
 <script>
 export default {
   name: "WeatherCard",
-  mounted() {
-    console.log("je sui monted");
-    this.test();
-  },
-  methods: {
-    test() {
-      console.log("ENV", process.env.VUE_APP_API_KEY);
-    },
-  },
+  mounted() {},
+  methods: {},
 };
 </script>
 
