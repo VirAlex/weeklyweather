@@ -6,7 +6,8 @@
     <div class="container-weather">
       <div class="city">{{ city }}</div>
       <button @click="getMyInfo()">MA METEO</button>
-      <div class="prevision">
+      <button @click="showPrevision()">+</button>
+      <div v-if="!otherdaysShow" class="prevision">
         <div class="text">
           It's
           <br />
@@ -15,19 +16,29 @@
           now
         </div>
         <div class="img">
-          <img :src="iconWeather" alt="">
+          <img :src="iconWeatherShow" alt="" :style="styleImgStore" />
         </div>
       </div>
-      <div class="temp">{{ temperature }}°</div>
+      <div v-if="!otherdaysShow" class="temp">{{ temperature }}°</div>
+      <otherdays v-if="otherdaysShow" :prevision="prevision" :day="day" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import otherdays from "@/components/OthersDays.vue";
 import backAfternon from "@/assets/after_noon.png";
 import backNight from "@/assets/night.jpg";
 import suny from "@/assets/icons/suny.png";
-import cloud from "@/assets/icons/cloud_force.png";
+import cloud from "@/assets/icons/cloud.png";
+import cloudSuny from "@/assets/icons/cloud_suny.png";
+import showerRain from "@/assets/icons/shower_rain.png";
+import lotCloud from "@/assets/icons/lot_cloud.png";
+import rain from "@/assets/icons/rain.png";
+import thunderstorm from "@/assets/icons/thunderstorm.png";
+import mist from "@/assets/icons/mist.png";
+import snow from "@/assets/icons/snow.png";
 import axios from "axios";
 
 export default {
@@ -37,6 +48,13 @@ export default {
       backNight,
       suny,
       cloud,
+      cloudSuny,
+      lotCloud,
+      showerRain,
+      rain,
+      thunderstorm,
+      snow,
+      mist,
       temp: "",
       location: null,
       gettingLocation: false,
@@ -44,8 +62,13 @@ export default {
       city: "",
       temperature: "",
       weather: "",
-      iconWeather: "",
+      otherdaysShow: false,
+      prevision: [],
+      day: 0,
     };
+  },
+  components: {
+    otherdays,
   },
   created() {
     //do we support geolocation
@@ -60,7 +83,6 @@ export default {
       (pos) => {
         this.gettingLocation = false;
         this.location = pos;
-        console.log("LOCATION", pos);
       },
       (err) => {
         this.gettingLocation = false;
@@ -70,61 +92,76 @@ export default {
   },
   mounted() {
     this.getInfo();
+    // this.getPrevision();
+  },
+  computed: {
+    ...mapGetters(["whatDay", "iconWeatherShow", "styleImgStore"]),
   },
   methods: {
+    ...mapActions(["changeDay", "changeIcones", "giveTheDate"]),
     getInfo() {
       axios
         .get(
           `http://api.openweathermap.org/data/2.5/weather?q=Paris&&units=metric&appid=${process.env.VUE_APP_API_KEY}`
         )
         .then((response) => {
-          console.log("NO COORD", response.data);
           this.city = response.data.name;
           this.temperature = Math.round(response.data.main.temp);
           this.weather = response.data.weather[0].main;
-          console.log("WEATHER", response.data.weather[0].icon);
-          switch (response.data.weather[0].icon) {
-            case "01d":
-              this.iconWeather = this.suny;
-              break;
-            case "02d":
-              this.iconWeather = '<i class="fas fa-cloud-sun"></i>';
-              break;
-            case "03d":
-              this.iconWeather = this.suny;
-              break;
-            case "04d":
-               this.iconWeather = this.cloud;
-              break;
-          }
+          this.changeIcones(response.data.weather[0].icon);
+          this.getPrevision();
         });
     },
     getMyInfo() {
       if (this.location) {
-        console.log("IF", this.location);
         axios
           .get(
             `http://api.openweathermap.org/data/2.5/weather?lat=${this.location.coords.latitude}&lon=${this.location.coords.longitude}&units=metric&appid=${process.env.VUE_APP_API_KEY}`
           )
           .then((response) => {
-            console.log("COORD", response.data);
             this.city = response.data.name;
             this.temperature = Math.round(response.data.main.temp);
             this.weather = response.data.weather[0].main;
+            this.changeIcones(response.data.weather[0].icon);
+            this.getPrevision();
           });
       } else {
-        console.log("ELSE", this.location);
         axios
           .get(
             `http://api.openweathermap.org/data/2.5/weather?q=Paris&&units=metric&appid=${process.env.VUE_APP_API_KEY}`
           )
           .then((response) => {
-            console.log("NO COORD", response.data);
             this.city = response.data.name;
             this.temperature = Math.round(response.data.main.temp);
             this.weather = response.data.weather[0].main;
+            this.changeIcones(response.data.weather[0].icon);
           });
       }
+    },
+    getPrevision() {
+      if (this.location) {
+        axios
+          .get(
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${this.location.coords.latitude}&lon=${this.location.coords.longitude}&exclude=hourly,minutely&units=metric&appid=${process.env.VUE_APP_API_KEY}`
+          )
+          .then((response) => {
+            this.prevision.push(response.data.daily);
+          });
+      } else {
+        axios
+          .get(
+            `https://api.openweathermap.org/data/2.5/onecall?lat=48.8566969&lon=2.3514616&exclude=hourly,minutely&units=metric&appid=${process.env.VUE_APP_API_KEY}`
+          )
+          .then((response) => {
+            this.prevision.push(response.data.daily);
+          });
+      }
+    },
+    showPrevision() {
+      this.otherdaysShow = true;
+      this.changeDay();
+      this.changeIcones(this.prevision[0][this.whatDay].weather[0].icon);
+      this.giveTheDate(this.whatDay);
     },
   },
 };
