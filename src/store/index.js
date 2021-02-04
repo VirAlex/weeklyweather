@@ -78,35 +78,35 @@ export default new Vuex.Store({
             break;
           case "02d":
             state.icone = state.cloudSuny;
-            state.styleImg = "width: 80px; height: 90px";
+            state.styleImg = "width: 70px; height: 80px";
             break;
           case "03d":
             state.icone = state.cloud;
-            state.styleImg = "width: 80px; height: 90px";
+            state.styleImg = "width: 70px; height: 80px";
             break;
           case "04d":
             state.icone = state.lotCloud;
-            state.styleImg = "width: 80px; height: 90px";
+            state.styleImg = "width: 70px; height: 80px";
             break;
           case "09d":
             state.icone = state.showerRain;
-            state.styleImg = "width: 80px; height: 90px";
+            state.styleImg = "width: 70px; height: 80px";
             break;
           case "10d":
             state.icone = state.rain;
-            state.styleImg = "width: 80px; height: 90px";
+            state.styleImg = "width: 70px; height: 80px";
             break;
           case "11d":
             state.icone = state.thunderstorm;
-            state.styleImg = "width: 80px; height: 90px";
+            state.styleImg = "width: 70px; height: 80px";
             break;
           case "13d":
             state.icone = state.snow;
-            state.styleImg = "width: 80px; height: 90px";
+            state.styleImg = "width: 70px; height: 80px";
             break;
           case "50d":
             state.icone = state.mist;
-            state.styleImg = "width: 80px; height: 90px";
+            state.styleImg = "width: 70px; height: 80px";
             break;
         }
       }

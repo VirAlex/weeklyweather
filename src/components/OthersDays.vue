@@ -176,8 +176,9 @@ export default {
     .temp {
       text-align: center;
       color: $white;
+      margin-top: 15px;
       font-weight: 700;
-      font-size: 50px;
+      font-size: 70px;
     }
   }
 }

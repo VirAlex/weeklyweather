@@ -34,33 +34,33 @@
           </div>
           <div class="temp">{{ temperature }}°</div>
         </div>
-        <div class="input-mark">
-          <font-awesome-icon
-            v-if="!search"
-            class="fa fa-search fa-2x active"
-            @click="searchInput"
-            icon="search"
-            :style="{ color: 'white' }"
-          />
-          <div v-if="search" class="input-wrapper">
-            <input
-              v-model="input"
-              type="text"
-              id="user"
-              role="textbox"
-              placeholder="City"
-              contenteditable
-              @keyup.enter="searchMethod()"
-              required
-            />
-          </div>
-          <font-awesome-icon
-            class="fa fa-search fa-2x active"
-            icon="map-marker"
-            :style="{ color: 'white' }"
-            @click="getMyInfo()"
+      </div>
+      <div class="input-mark">
+        <font-awesome-icon
+          v-if="!search"
+          class="fa fa-search fa-2x active"
+          @click="searchInput"
+          icon="search"
+          :style="{ color: 'white' }"
+        />
+        <div v-if="search" class="input-wrapper">
+          <input
+            v-model="input"
+            type="text"
+            id="user"
+            role="textbox"
+            placeholder="City"
+            contenteditable
+            @keyup.enter="searchMethod()"
+            required
           />
         </div>
+        <font-awesome-icon
+          class="fa fa-search fa-2x active"
+          icon="map-marker"
+          :style="{ color: 'white' }"
+          @click="getMyInfo()"
+        />
       </div>
     </div>
     <div
@@ -238,7 +238,7 @@ export default {
 
     searchMethod() {
       console.log("SEARCH");
-      this.prevision = []
+      this.prevision = [];
       this.otherdaysShow = false;
       this.reset();
       axios
@@ -256,13 +256,16 @@ export default {
               `https://api.opencagedata.com/geocode/v1/json?q=${this.input}&key=${process.env.VUE_APP_GEOCOD_KEY}`
             )
             .then((response) => {
-              console.log("RESPONSE", response.data.results[0].bounds.northeast.lat);
+              console.log(
+                "RESPONSE",
+                response.data.results[0].bounds.northeast.lat
+              );
               axios
                 .get(
                   `https://api.openweathermap.org/data/2.5/onecall?lat=${response.data.results[0].bounds.northeast.lat}&lon=${response.data.results[0].bounds.northeast.lng}&exclude=hourly,minutely&units=metric&appid=${process.env.VUE_APP_API_KEY}`
                 )
                 .then((response) => {
-                  console.log('response.data.daily', response.data.daily)
+                  console.log("response.data.daily", response.data.daily);
                   this.prevision.push(response.data.daily);
                 });
             });
@@ -282,7 +285,7 @@ export default {
         });
     },
     getMyInfo() {
-      this.prevision =[]
+      this.prevision = [];
       if (this.location) {
         this.search = false;
         this.otherdaysShow = false;
@@ -369,15 +372,6 @@ export default {
     height: 55%;
     border-radius: 35px;
     /* margin: auto auto; */
-    .input-mark {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 15px;
-      width: 100%;
-      i {
-        color: white;
-      }
-    }
     .city {
       text-align: center;
       color: $white;
@@ -406,15 +400,25 @@ export default {
     .temp {
       text-align: center;
       color: $white;
+      margin-top: 15px;
       font-weight: 700;
-      font-size: 50px;
+      font-size: 70px;
     }
   }
   body {
     padding: 40px;
     font-family: "Helvetica Neue";
   }
-
+  .input-mark {
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 25px;
+    width: 100%;
+    i {
+      color: white;
+    }
+  }
   .input-wrapper {
     display: flex;
     justify-content: center;
