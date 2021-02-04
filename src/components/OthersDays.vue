@@ -3,7 +3,7 @@
     <div class="prevision">
       <font-awesome-icon
         class="fa fa-search fa-2x active"
-        :style="{ color: 'white' }"
+        :style="{ color: 'white', position: 'absolute', marginRight:'280px', marginTop:'250px'}"
         icon="arrow-circle-left"
         @click="previousDayMethod()"
       />
@@ -17,13 +17,13 @@
       </div>
       <font-awesome-icon
         class="fa fa-search fa-2x active"
-        :style="{ color: 'white' }"
+        :style="{ color: 'white', position: 'absolute', marginLeft:'280px', marginTop:'250px' }"
         icon="arrow-circle-right"
         @click="otherDay()"
       />
     </div>
     <div class="img">
-      <img :src="iconWeatherShow" alt="" :style="styleImg" />
+      <img :src="iconWeatherShow" alt="" :style="styleImgStore" />
     </div>
     <div class="temp">{{ Math.round(prevision[0][whatDay].temp.day) }}°</div>
   </div>

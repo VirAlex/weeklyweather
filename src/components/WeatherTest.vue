@@ -25,7 +25,12 @@
             <font-awesome-icon
               class="fa fa-search fa-2x active"
               @click="showPrevision()"
-              :style="{ color: 'white' }"
+              :style="{
+                color: 'white',
+                position: 'absolute',
+                marginLeft: '280px',
+                marginTop: '250px',
+              }"
               icon="arrow-circle-right"
             />
           </div>
@@ -36,13 +41,6 @@
         </div>
       </div>
       <div class="input-mark">
-        <font-awesome-icon
-          v-if="!search"
-          class="fa fa-search fa-2x active"
-          @click="searchInput"
-          icon="search"
-          :style="{ color: 'white' }"
-        />
         <div v-if="search" class="input-wrapper">
           <input
             v-model="input"
@@ -55,13 +53,30 @@
             required
           />
         </div>
-        <font-awesome-icon
-          class="fa fa-search fa-2x active"
-          icon="map-marker"
-          :style="{ color: 'white' }"
-          @click="getMyInfo()"
-        />
       </div>
+      <font-awesome-icon
+        v-if="!search"
+        class="fa fa-search fa-2x active"
+        @click="searchInput"
+        icon="search"
+        :style="{
+          color: 'white',
+          position: 'absolute',
+          marginLeft: '15px',
+          marginTop: '100px',
+        }"
+      />
+      <font-awesome-icon
+        class="fa fa-search fa-2x active"
+        icon="map-marker"
+        :style="{
+          color: 'white',
+          position: 'absolute',
+          marginLeft: '300px',
+          marginTop: '100px',
+        }"
+        @click="getMyInfo()"
+      />
     </div>
     <div
       class="main-container"
@@ -88,7 +103,12 @@
             <font-awesome-icon
               class="fa fa-search fa-2x active"
               @click="showPrevision()"
-              :style="{ color: 'white' }"
+              :style="{
+                color: 'white',
+                position: 'absolute',
+                marginLeft: '280px',
+                marginTop: '250px',
+              }"
               icon="arrow-circle-right"
             />
           </div>
@@ -97,34 +117,44 @@
           </div>
           <div class="temp">{{ temperature }}°</div>
         </div>
-        <div class="input-mark">
-          <font-awesome-icon
-            v-if="!search"
-            class="fa fa-search fa-2x active"
-            @click="searchInput"
-            icon="search"
-            :style="{ color: 'white' }"
-          />
-          <div v-if="search" class="input-wrapper">
-            <input
-              v-model="input"
-              type="text"
-              id="user"
-              role="textbox"
-              placeholder="City"
-              contenteditable
-              @keyup.enter="searchMethod()"
-              required
-            />
-          </div>
-          <font-awesome-icon
-            class="fa fa-search fa-2x active"
-            icon="map-marker"
-            :style="{ color: 'white' }"
-            @click="getMyInfo()"
+      </div>
+      <div class="input-mark">
+        <div v-if="search" class="input-wrapper">
+          <input
+            v-model="input"
+            type="text"
+            id="user"
+            role="textbox"
+            placeholder="City"
+            contenteditable
+            @keyup.enter="searchMethod()"
+            required
           />
         </div>
       </div>
+      <font-awesome-icon
+        v-if="!search"
+        class="fa fa-search fa-2x active"
+        @click="searchInput"
+        icon="search"
+        :style="{
+          color: 'white',
+          position: 'absolute',
+          marginLeft: '15px',
+          marginTop: '100px',
+        }"
+      />
+      <font-awesome-icon
+        class="fa fa-search fa-2x active"
+        icon="map-marker"
+        :style="{
+          color: 'white',
+          position: 'absolute',
+          marginLeft: '300px',
+          marginTop: '100px',
+        }"
+        @click="getMyInfo()"
+      />
     </div>
   </div>
 </template>
@@ -221,8 +251,8 @@ export default {
       // var time = moment() gives you current time. no format required.
       let currentTime = moment();
       let time = moment(currentTime, "HH:mm:ss"),
-        beforeTime = moment("11:00:00", format),
-        afterTime = moment(":00:00", format);
+        beforeTime = moment("18:00:00", format),
+        afterTime = moment("07:00:00", format);
 
       if (time.isBetween(beforeTime, afterTime)) {
         this.changeBackground = true;
@@ -410,11 +440,9 @@ export default {
     font-family: "Helvetica Neue";
   }
   .input-mark {
-    position: absolute;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     margin-top: 25px;
-    width: 100%;
     i {
       color: white;
     }
@@ -422,21 +450,27 @@ export default {
   .input-wrapper {
     display: flex;
     justify-content: center;
-    /* position: relative; */
+    position: absolute;
     line-height: 14px;
     margin: 0 10px;
     display: inline-block;
+    margin-right: 180px;
   }
 
   input {
-    margin: 0 auto;
     font-size: 13px;
-    color: #555;
     outline: none;
     border: 1px solid #bbb;
     padding: 10px 20px;
     border-radius: 20px;
-    /* position: relative; */
+    background: rgb(226 206 206 / 40%);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: white;
+    position: absolute;
+  }
+  input::placeholder {
+    color: white;
   }
 }
 </style>

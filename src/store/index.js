@@ -67,7 +67,7 @@ export default new Vuex.Store({
         console.log("IF");
         state.prevision = true;
       } else {
-        state.day
+        state.day;
       }
     },
     CHANGE_ICONES(state, data) {
@@ -76,37 +76,72 @@ export default new Vuex.Store({
           case "01d":
             state.icone = state.suny;
             break;
+          case "01n":
+            state.icone = state.suny;
+            break;
           case "02d":
             state.icone = state.cloudSuny;
-            state.styleImg = "width: 70px; height: 80px";
+            state.styleImg = "width: 60px; height: 70px";
+            break;
+          case "02n":
+            state.icone = state.cloudSuny;
+            state.styleImg = "width: 60px; height: 70px";
             break;
           case "03d":
             state.icone = state.cloud;
-            state.styleImg = "width: 70px; height: 80px";
+            state.styleImg = "width: 60px; height: 70px";
+            break;
+          case "03n":
+            state.icone = state.cloud;
+            state.styleImg = "width: 60px; height: 70px";
             break;
           case "04d":
             state.icone = state.lotCloud;
             state.styleImg = "width: 70px; height: 80px";
             break;
+          case "04n":
+            state.icone = state.lotCloud;
+            state.styleImg = "width: 70px; height: 80px";
+            break;
           case "09d":
             state.icone = state.showerRain;
-            state.styleImg = "width: 70px; height: 80px";
+            state.styleImg = "width: 60px; height: 70px";
+            break;
+          case "09n":
+            state.icone = state.showerRain;
+            state.styleImg = "width: 60px; height: 70px";
             break;
           case "10d":
             state.icone = state.rain;
-            state.styleImg = "width: 70px; height: 80px";
+            state.styleImg = "width: 60px; height: 70px";
+            break;
+          case "10n":
+            state.icone = state.rain;
+            state.styleImg = "width: 60px; height: 70px";
             break;
           case "11d":
             state.icone = state.thunderstorm;
-            state.styleImg = "width: 70px; height: 80px";
+            state.styleImg = "width: 60px; height: 70px";
+            break;
+          case "11n":
+            state.icone = state.thunderstorm;
+            state.styleImg = "width: 60px; height: 70px";
             break;
           case "13d":
             state.icone = state.snow;
-            state.styleImg = "width: 70px; height: 80px";
+            state.styleImg = "width: 60px; height: 70px";
+            break;
+          case "13n":
+            state.icone = state.snow;
+            state.styleImg = "width: 60px; height: 70px";
             break;
           case "50d":
             state.icone = state.mist;
-            state.styleImg = "width: 70px; height: 80px";
+            state.styleImg = "width: 60px; height: 70px";
+            break;
+          case "50n":
+            state.icone = state.mist;
+            state.styleImg = "width: 60px; height: 70px";
             break;
         }
       }
