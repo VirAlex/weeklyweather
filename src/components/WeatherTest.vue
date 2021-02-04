@@ -1,65 +1,129 @@
 <template>
-  <div
-    class="main-container"
-    :style="'background-image:url(' + backAfternon + ')'"
-  >
-    <div class="container-weather">
-      <div class="city">{{ city }}</div>
-      <otherdays
-        v-if="otherdaysShow && whatDay !== -1 && !showPrevisionData"
-        :prevision="prevision"
-        :day="day"
-        @otherdaysShow="otherDay"
-      />
-      <div v-if="whatDay === -1 && showPrevisionData">
-        <div class="prevision">
-          <div class="text">
-            It's
-            <br />
-            {{ weather }}
-            <br />
-            now
+  <div>
+    <div
+      class="main-container"
+      v-if="!changeBackground"
+      :style="'background-image:url(' + backAfternon + ')'"
+    >
+      <div class="container-weather">
+        <div class="city">{{ city }}</div>
+        <otherdays
+          v-if="otherdaysShow && whatDay !== -1 && !showPrevisionData"
+          :prevision="prevision"
+          :day="day"
+          @otherdaysShow="otherDay"
+        />
+        <div v-if="whatDay === -1 && showPrevisionData">
+          <div class="prevision">
+            <div class="text">
+              It's
+              <br />
+              {{ weather }}
+              <br />
+              now
+            </div>
+            <font-awesome-icon
+              class="fa fa-search fa-2x active"
+              @click="showPrevision()"
+              :style="{ color: 'white' }"
+              icon="arrow-circle-right"
+            />
+          </div>
+          <div class="img">
+            <img :src="iconWeatherShow" alt="" :style="styleImgStore" />
+          </div>
+          <div class="temp">{{ temperature }}°</div>
+        </div>
+        <div class="input-mark">
+          <font-awesome-icon
+            v-if="!search"
+            class="fa fa-search fa-2x active"
+            @click="searchInput"
+            icon="search"
+            :style="{ color: 'white' }"
+          />
+          <div v-if="search" class="input-wrapper">
+            <input
+              v-model="input"
+              type="text"
+              id="user"
+              role="textbox"
+              placeholder="City"
+              contenteditable
+              @keyup.enter="searchMethod()"
+              required
+            />
           </div>
           <font-awesome-icon
             class="fa fa-search fa-2x active"
-            @click="showPrevision()"
+            icon="map-marker"
             :style="{ color: 'white' }"
-            icon="arrow-circle-right"
+            @click="getMyInfo()"
           />
-        </div>
-        <div class="img">
-          <img :src="iconWeatherShow" alt="" :style="styleImgStore" />
-        </div>
-        <div class="temp">
-          {{ temperature }}°
         </div>
       </div>
-      <div class="input-mark">
-        <font-awesome-icon
-          v-if="!search"
-          class="fa fa-search fa-2x active"
-          @click="searchInput"
-          icon="search"
-          :style="{ color: 'white' }"
+    </div>
+    <div
+      class="main-container"
+      v-else
+      :style="'background-image:url(' + backNight + ')'"
+    >
+      <div class="container-weather">
+        <div class="city">{{ city }}</div>
+        <otherdays
+          v-if="otherdaysShow && whatDay !== -1 && !showPrevisionData"
+          :prevision="prevision"
+          :day="day"
+          @otherdaysShow="otherDay"
         />
-        <div v-if="search" class="input-wrapper">
-          <input
-            v-model="input"
-            type="text"
-            id="user"
-            role="textbox"
-            placeholder="City"
-            contenteditable
-            @submit="searchMethod()"
-            required
+        <div v-if="whatDay === -1 && showPrevisionData">
+          <div class="prevision">
+            <div class="text">
+              It's
+              <br />
+              {{ weather }}
+              <br />
+              now
+            </div>
+            <font-awesome-icon
+              class="fa fa-search fa-2x active"
+              @click="showPrevision()"
+              :style="{ color: 'white' }"
+              icon="arrow-circle-right"
+            />
+          </div>
+          <div class="img">
+            <img :src="iconWeatherShow" alt="" :style="styleImgStore" />
+          </div>
+          <div class="temp">{{ temperature }}°</div>
+        </div>
+        <div class="input-mark">
+          <font-awesome-icon
+            v-if="!search"
+            class="fa fa-search fa-2x active"
+            @click="searchInput"
+            icon="search"
+            :style="{ color: 'white' }"
+          />
+          <div v-if="search" class="input-wrapper">
+            <input
+              v-model="input"
+              type="text"
+              id="user"
+              role="textbox"
+              placeholder="City"
+              contenteditable
+              @keyup.enter="searchMethod()"
+              required
+            />
+          </div>
+          <font-awesome-icon
+            class="fa fa-search fa-2x active"
+            icon="map-marker"
+            :style="{ color: 'white' }"
+            @click="getMyInfo()"
           />
         </div>
-        <font-awesome-icon
-          class="fa fa-search fa-2x active"
-          icon="map-marker"
-          :style="{ color: 'white' }"
-          @click="getMyInfo()"
-        />
       </div>
     </div>
   </div>
@@ -67,6 +131,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import moment from "moment";
 import otherdays from "@/components/OthersDays.vue";
 import backAfternon from "@/assets/after_noon.png";
 import backNight from "@/assets/night.jpg";
@@ -106,6 +171,7 @@ export default {
       weather: "",
       otherdaysShow: false,
       prevision: [],
+      changeBackground: "",
       day: 0,
     };
   },
@@ -133,21 +199,46 @@ export default {
     );
   },
   mounted() {
+    this.hourTime();
     this.getInfo();
     // this.getPrevision();
   },
   computed: {
-    ...mapGetters(["whatDay", "iconWeatherShow", "styleImgStore", "showPrevisionData"]),
+    ...mapGetters([
+      "whatDay",
+      "iconWeatherShow",
+      "styleImgStore",
+      "showPrevisionData",
+    ]),
   },
   methods: {
     ...mapActions(["changeDay", "changeIcones", "giveTheDate", "reset"]),
     otherDay(value) {
       this.otherdaysShow = value;
     },
+    hourTime() {
+      var format = "hh:mm:ss";
+      // var time = moment() gives you current time. no format required.
+      let currentTime = moment();
+      let time = moment(currentTime, "HH:mm:ss"),
+        beforeTime = moment("11:00:00", format),
+        afterTime = moment(":00:00", format);
+
+      if (time.isBetween(beforeTime, afterTime)) {
+        this.changeBackground = true;
+      } else {
+        this.changeBackground = false;
+      }
+
+      // prints 'is between'
+    },
     searchInput() {
       this.search = !this.search;
     },
+
     searchMethod() {
+      console.log("SEARCH");
+      this.prevision = []
       this.otherdaysShow = false;
       this.reset();
       axios
@@ -159,7 +250,22 @@ export default {
           this.temperature = Math.round(response.data.main.temp);
           this.weather = response.data.weather[0].main;
           this.changeIcones(response.data.weather[0].icon);
-          this.getPrevision();
+          console.log("THIS INPUT", this.input);
+          axios
+            .get(
+              `https://api.opencagedata.com/geocode/v1/json?q=${this.input}&key=${process.env.VUE_APP_GEOCOD_KEY}`
+            )
+            .then((response) => {
+              console.log("RESPONSE", response.data.results[0].bounds.northeast.lat);
+              axios
+                .get(
+                  `https://api.openweathermap.org/data/2.5/onecall?lat=${response.data.results[0].bounds.northeast.lat}&lon=${response.data.results[0].bounds.northeast.lng}&exclude=hourly,minutely&units=metric&appid=${process.env.VUE_APP_API_KEY}`
+                )
+                .then((response) => {
+                  console.log('response.data.daily', response.data.daily)
+                  this.prevision.push(response.data.daily);
+                });
+            });
         });
     },
     getInfo() {
@@ -176,6 +282,7 @@ export default {
         });
     },
     getMyInfo() {
+      this.prevision =[]
       if (this.location) {
         this.search = false;
         this.otherdaysShow = false;

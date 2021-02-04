@@ -43,25 +43,32 @@ export default new Vuex.Store({
     showTheDate(state) {
       return state.date;
     },
-    showPrevisionData(state){
-      return state.prevision
-    }
+    showPrevisionData(state) {
+      return state.prevision;
+    },
   },
   mutations: {
     CHANGE_DAY(state) {
       if (state.day <= 6) {
-        console.log('IF')
-        state.prevision = false
+        console.log("IF");
+        state.prevision = false;
         state.day++;
       } else {
-        console.log('ELSE')
+        console.log("ELSE");
         state.day = -1;
-        state.prevision = true
+        state.prevision = true;
       }
     },
     PREVIOUS_DAY(state) {
       console.log("PREVIOUS DAY");
+      console.log("STATE DAY", state.day);
       state.day--;
+      if (state.day === -1) {
+        console.log("IF");
+        state.prevision = true;
+      } else {
+        state.day
+      }
     },
     CHANGE_ICONES(state, data) {
       {
@@ -115,6 +122,7 @@ export default new Vuex.Store({
       state.date = "";
       state.icone = "";
       state.styleImg = "";
+      state.prevision = true;
     },
   },
   actions: {
