@@ -9,11 +9,9 @@
       />
       <div class="text">
         It's
-        <br />
         {{ prevision[0][whatDay].weather[0].description }}
-        <br />
-        <span v-if="whatDay == 0">tommorow</span>
-        <span v-else>{{ showTheDate }}</span>
+        <span style="font-weight: 800" v-if="whatDay == 0">tommorow</span>
+        <span v-else style="font-weight: 800">{{ showTheDate }}</span>
       </div>
       <font-awesome-icon
         class="fa fa-search fa-2x active"

@@ -17,10 +17,8 @@
           <div class="prevision">
             <div class="text">
               It's
-              <br />
               {{ weather }}
-              <br />
-              now
+              <span style="font-weight: 800">now</span>
             </div>
             <font-awesome-icon
               class="fa fa-search fa-2x active"
@@ -95,10 +93,8 @@
           <div class="prevision">
             <div class="text">
               It's
-              <br />
               {{ weather }}
-              <br />
-              now
+              <span style="font-weight: 800">now</span>
             </div>
             <font-awesome-icon
               class="fa fa-search fa-2x active"
