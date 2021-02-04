@@ -1,24 +1,36 @@
 <template>
   <div>
     <div class="prevision">
+      <font-awesome-icon
+        class="fa fa-search fa-2x active"
+        :style="{ color: 'white' }"
+        icon="arrow-circle-left"
+        @click="previousDayMethod()"
+      />
       <div class="text">
         It's
         <br />
         {{ prevision[0][whatDay].weather[0].description }}
         <br />
         <span v-if="whatDay == 0">tommorow</span>
-        <span v-else>{{showTheDate}}</span>
+        <span v-else>{{ showTheDate }}</span>
       </div>
-      <div class="img">
-        <img :src="iconWeatherShow" alt="" :style="styleImg" />
-      </div>
+      <font-awesome-icon
+        class="fa fa-search fa-2x active"
+        :style="{ color: 'white' }"
+        icon="arrow-circle-right"
+        @click="otherDay()"
+      />
+    </div>
+    <div class="img">
+      <img :src="iconWeatherShow" alt="" :style="styleImg" />
     </div>
     <div class="temp">{{ Math.round(prevision[0][whatDay].temp.day) }}°</div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import suny from "@/assets/icons/suny.png";
 import cloud from "@/assets/icons/cloud.png";
 import cloudSuny from "@/assets/icons/cloud_suny.png";
@@ -43,6 +55,24 @@ export default {
       snow,
       mist,
     };
+  },
+  methods: {
+    ...mapActions(["changeDay", "changeIcones", "giveTheDate", "previousDay"]),
+    otherDay() {
+      this.changeDay();
+      this.changeIcones(this.prevision[0][this.whatDay].weather[0].icon);
+      this.giveTheDate(this.whatDay);
+    },
+    previousDayMethod() {
+      console.log("Previous Method");
+      this.previousDay();
+      if (this.whatDay === -1) {
+        console.log("what day -1");
+        this.$emit("otherdaysShow", false);
+      }
+      this.changeIcones(this.prevision[0][this.whatDay].weather[0].icon);
+      this.giveTheDate(this.whatDay);
+    },
   },
   created() {
     {
@@ -86,7 +116,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["whatDay","iconWeatherShow", "styleImgStore", "showTheDate"]),
+    ...mapGetters([
+      "whatDay",
+      "iconWeatherShow",
+      "styleImgStore",
+      "showTheDate",
+    ]),
   },
 };
 </script>
@@ -118,25 +153,31 @@ export default {
       color: $white;
       font-weight: 800;
       font-size: 30px;
+      margin-bottom: 25px;
+    }
+    .img {
+      display: flex;
+      justify-content: center;
+      img {
+        margin: 0 auto;
+        width: 50px;
+      }
     }
     .prevision {
       display: flex;
       justify-content: space-around;
-      .img {
-        img {
-          width: 50px;
-        }
-      }
+      width: 100%;
+      height: 90px;
       .text {
         color: $white;
-        font-size: 25px;
+        font-size: 20px;
       }
     }
     .temp {
       text-align: center;
       color: $white;
       font-weight: 700;
-      font-size: 35px;
+      font-size: 50px;
     }
   }
 }

@@ -9,7 +9,7 @@ import rain from "@/assets/icons/rain.png";
 import thunderstorm from "@/assets/icons/thunderstorm.png";
 import mist from "@/assets/icons/mist.png";
 import snow from "@/assets/icons/snow.png";
-import moment from "moment"
+import moment from "moment";
 
 Vue.use(Vuex);
 
@@ -19,6 +19,7 @@ export default new Vuex.Store({
     icone: "",
     styleImg: "",
     date: "",
+    prevision: true,
     suny,
     cloud,
     cloudSuny,
@@ -39,13 +40,28 @@ export default new Vuex.Store({
     styleImgStore(state) {
       return state.styleImg;
     },
-    showTheDate(state){
-      return state.date
+    showTheDate(state) {
+      return state.date;
+    },
+    showPrevisionData(state){
+      return state.prevision
     }
   },
   mutations: {
     CHANGE_DAY(state) {
-      state.day++;
+      if (state.day <= 6) {
+        console.log('IF')
+        state.prevision = false
+        state.day++;
+      } else {
+        console.log('ELSE')
+        state.day = -1;
+        state.prevision = true
+      }
+    },
+    PREVIOUS_DAY(state) {
+      console.log("PREVIOUS DAY");
+      state.day--;
     },
     CHANGE_ICONES(state, data) {
       {
@@ -90,9 +106,15 @@ export default new Vuex.Store({
     },
     GIVE_THE_DATE(state, data) {
       let today = moment();
-      let otherDate = moment(today).add((data+1), 'days');
-      let date = moment(otherDate).format('dddd'); 
-      state.date = date
+      let otherDate = moment(today).add(data + 1, "days");
+      let date = moment(otherDate).format("dddd");
+      state.date = date;
+    },
+    RESET(state) {
+      state.day = -1;
+      state.date = "";
+      state.icone = "";
+      state.styleImg = "";
     },
   },
   actions: {
@@ -104,6 +126,12 @@ export default new Vuex.Store({
     },
     giveTheDate({ commit }, payload) {
       commit("GIVE_THE_DATE", payload);
+    },
+    reset({ commit }) {
+      commit("RESET");
+    },
+    previousDay({ commit }) {
+      commit("PREVIOUS_DAY");
     },
   },
   modules: {},
