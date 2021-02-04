@@ -3,19 +3,20 @@
     <div class="prevision">
       <font-awesome-icon
         class="fa fa-search fa-2x active"
-        :style="{ color: 'white', position: 'absolute', marginRight:'280px', marginTop:'250px'}"
+        :style="{ color: 'white', position: 'absolute', marginRight:'280px', marginTop:'250px', cursor:'pointer'}"
         icon="arrow-circle-left"
         @click="previousDayMethod()"
       />
-      <div class="text">
+      <div class="text" style="text-align:center">
         It's
         {{ prevision[0][whatDay].weather[0].description }}
+        <br>
         <span style="font-weight: 800" v-if="whatDay == 0">tommorow</span>
         <span v-else style="font-weight: 800">{{ showTheDate }}</span>
       </div>
       <font-awesome-icon
         class="fa fa-search fa-2x active"
-        :style="{ color: 'white', position: 'absolute', marginLeft:'280px', marginTop:'250px' }"
+        :style="{ color: 'white', position: 'absolute', marginLeft:'280px', marginTop:'250px', cursor: 'pointer' }"
         icon="arrow-circle-right"
         @click="otherDay()"
       />

@@ -15,10 +15,10 @@
         />
         <div v-if="whatDay === -1 && showPrevisionData">
           <div class="prevision">
-            <div class="text">
-              It's
-              {{ weather }}
-              <span style="font-weight: 800">now</span>
+            <div class="text" style="text-align:center">
+              <span> It's {{ weather }}</span>
+              <br />
+              <span style="font-weight: 800; text-align: center">now</span>
             </div>
             <font-awesome-icon
               class="fa fa-search fa-2x active"
@@ -28,6 +28,7 @@
                 position: 'absolute',
                 marginLeft: '280px',
                 marginTop: '250px',
+                cursor: 'pointer',
               }"
               icon="arrow-circle-right"
             />
@@ -62,6 +63,7 @@
           position: 'absolute',
           marginLeft: '15px',
           marginTop: '100px',
+          cursor: 'pointer',
         }"
       />
       <font-awesome-icon
@@ -72,6 +74,7 @@
           position: 'absolute',
           marginLeft: '300px',
           marginTop: '100px',
+          cursor: 'pointer',
         }"
         @click="getMyInfo()"
       />
@@ -91,15 +94,16 @@
         />
         <div v-if="whatDay === -1 && showPrevisionData">
           <div class="prevision">
-            <div class="text">
-              It's
-              {{ weather }}
-              <span style="font-weight: 800">now</span>
+            <div class="text" style="text-align:center">
+              <span> It's {{ weather }}</span>
+              <br />
+              <span style="font-weight: 800; text-align: center">now</span>
             </div>
             <font-awesome-icon
               class="fa fa-search fa-2x active"
               @click="showPrevision()"
               :style="{
+                cursor: 'pointer',
                 color: 'white',
                 position: 'absolute',
                 marginLeft: '280px',
